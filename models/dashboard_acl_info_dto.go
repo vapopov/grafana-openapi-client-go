@@ -64,9 +64,6 @@ type DashboardACLInfoDTO struct {
 	// team Id
 	TeamID int64 `json:"teamId,omitempty"`
 
-	// team Uid
-	TeamUID string `json:"teamUid,omitempty"`
-
 	// title
 	Title string `json:"title,omitempty"`
 
@@ -91,9 +88,6 @@ type DashboardACLInfoDTO struct {
 
 	// user login
 	UserLogin string `json:"userLogin,omitempty"`
-
-	// user Uid
-	UserUID string `json:"userUid,omitempty"`
 }
 
 // Validate validates this dashboard ACL info DTO

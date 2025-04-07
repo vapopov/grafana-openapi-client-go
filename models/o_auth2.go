@@ -30,10 +30,6 @@ type OAuth2 struct {
 	// client secret file
 	ClientSecretFile string `json:"client_secret_file,omitempty"`
 
-	// ClientSecretRef is the name of the secret within the secret manager to use as the client
-	// secret.
-	ClientSecretRef string `json:"client_secret_ref,omitempty"`
-
 	// endpoint params
 	EndpointParams map[string]string `json:"endpoint_params,omitempty"`
 
@@ -41,7 +37,7 @@ type OAuth2 struct {
 	NoProxy string `json:"no_proxy,omitempty"`
 
 	// proxy connect header
-	ProxyConnectHeader ProxyHeader `json:"proxy_connect_header,omitempty"`
+	ProxyConnectHeader Header `json:"proxy_connect_header,omitempty"`
 
 	// ProxyFromEnvironment makes use of net/http ProxyFromEnvironment function
 	// to determine proxies.

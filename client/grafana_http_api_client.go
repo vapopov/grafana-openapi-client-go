@@ -43,12 +43,9 @@ import (
 	"github.com/grafana/grafana-openapi-client-go/client/folder_permissions"
 	"github.com/grafana/grafana-openapi-client-go/client/folders"
 	"github.com/grafana/grafana-openapi-client-go/client/get_current_org"
-	"github.com/grafana/grafana-openapi-client-go/client/group_attribute_sync"
-	"github.com/grafana/grafana-openapi-client-go/client/health"
 	"github.com/grafana/grafana-openapi-client-go/client/ldap_debug"
 	"github.com/grafana/grafana-openapi-client-go/client/library_elements"
 	"github.com/grafana/grafana-openapi-client-go/client/licensing"
-	"github.com/grafana/grafana-openapi-client-go/client/migrations"
 	"github.com/grafana/grafana-openapi-client-go/client/org"
 	"github.com/grafana/grafana-openapi-client-go/client/org_invites"
 	"github.com/grafana/grafana-openapi-client-go/client/org_preferences"
@@ -139,12 +136,9 @@ func New(transport runtime.ClientTransport, cfg *TransportConfig, formats strfmt
 	cli.FolderPermissions = folder_permissions.New(transport, formats)
 	cli.Folders = folders.New(transport, formats)
 	cli.GetCurrentOrg = get_current_org.New(transport, formats)
-	cli.GroupAttributeSync = group_attribute_sync.New(transport, formats)
-	cli.Health = health.New(transport, formats)
 	cli.LDAPDebug = ldap_debug.New(transport, formats)
 	cli.LibraryElements = library_elements.New(transport, formats)
 	cli.Licensing = licensing.New(transport, formats)
-	cli.Migrations = migrations.New(transport, formats)
 	cli.Org = org.New(transport, formats)
 	cli.OrgInvites = org_invites.New(transport, formats)
 	cli.OrgPreferences = org_preferences.New(transport, formats)
@@ -282,17 +276,11 @@ type GrafanaHTTPAPI struct {
 
 	GetCurrentOrg get_current_org.ClientService
 
-	GroupAttributeSync group_attribute_sync.ClientService
-
-	Health health.ClientService
-
 	LDAPDebug ldap_debug.ClientService
 
 	LibraryElements library_elements.ClientService
 
 	Licensing licensing.ClientService
-
-	Migrations migrations.ClientService
 
 	Org org.ClientService
 
@@ -365,12 +353,9 @@ func (c *GrafanaHTTPAPI) SetTransport(transport runtime.ClientTransport) {
 	c.FolderPermissions.SetTransport(transport)
 	c.Folders.SetTransport(transport)
 	c.GetCurrentOrg.SetTransport(transport)
-	c.GroupAttributeSync.SetTransport(transport)
-	c.Health.SetTransport(transport)
 	c.LDAPDebug.SetTransport(transport)
 	c.LibraryElements.SetTransport(transport)
 	c.Licensing.SetTransport(transport)
-	c.Migrations.SetTransport(transport)
 	c.Org.SetTransport(transport)
 	c.OrgInvites.SetTransport(transport)
 	c.OrgPreferences.SetTransport(transport)

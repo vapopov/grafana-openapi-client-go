@@ -24,8 +24,38 @@ type AddAPIkeyReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *AddAPIkeyReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-	case 410:
-		result := NewAddAPIkeyGone()
+	case 200:
+		result := NewAddAPIkeyOK()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return result, nil
+	case 400:
+		result := NewAddAPIkeyBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+	case 401:
+		result := NewAddAPIkeyUnauthorized()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+	case 403:
+		result := NewAddAPIkeyForbidden()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+	case 409:
+		result := NewAddAPIkeyConflict()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+	case 500:
+		result := NewAddAPIkeyInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -35,65 +65,415 @@ func (o *AddAPIkeyReader) ReadResponse(response runtime.ClientResponse, consumer
 	}
 }
 
-// NewAddAPIkeyGone creates a AddAPIkeyGone with default headers values
-func NewAddAPIkeyGone() *AddAPIkeyGone {
-	return &AddAPIkeyGone{}
+// NewAddAPIkeyOK creates a AddAPIkeyOK with default headers values
+func NewAddAPIkeyOK() *AddAPIkeyOK {
+	return &AddAPIkeyOK{}
 }
 
 /*
-AddAPIkeyGone describes a response with status code 410, with default header values.
+AddAPIkeyOK describes a response with status code 200, with default header values.
 
-GoneError is returned when the requested endpoint was removed.
+(empty)
 */
-type AddAPIkeyGone struct {
-	Payload *models.ErrorResponseBody
+type AddAPIkeyOK struct {
+	Payload *models.NewAPIKeyResult
 }
 
-// IsSuccess returns true when this add a p ikey gone response has a 2xx status code
-func (o *AddAPIkeyGone) IsSuccess() bool {
-	return false
-}
-
-// IsRedirect returns true when this add a p ikey gone response has a 3xx status code
-func (o *AddAPIkeyGone) IsRedirect() bool {
-	return false
-}
-
-// IsClientError returns true when this add a p ikey gone response has a 4xx status code
-func (o *AddAPIkeyGone) IsClientError() bool {
+// IsSuccess returns true when this add a p ikey Ok response has a 2xx status code
+func (o *AddAPIkeyOK) IsSuccess() bool {
 	return true
 }
 
-// IsServerError returns true when this add a p ikey gone response has a 5xx status code
-func (o *AddAPIkeyGone) IsServerError() bool {
+// IsRedirect returns true when this add a p ikey Ok response has a 3xx status code
+func (o *AddAPIkeyOK) IsRedirect() bool {
 	return false
 }
 
-// IsCode returns true when this add a p ikey gone response a status code equal to that given
-func (o *AddAPIkeyGone) IsCode(code int) bool {
-	return code == 410
+// IsClientError returns true when this add a p ikey Ok response has a 4xx status code
+func (o *AddAPIkeyOK) IsClientError() bool {
+	return false
 }
 
-// Code gets the status code for the add a p ikey gone response
-func (o *AddAPIkeyGone) Code() int {
-	return 410
+// IsServerError returns true when this add a p ikey Ok response has a 5xx status code
+func (o *AddAPIkeyOK) IsServerError() bool {
+	return false
 }
 
-func (o *AddAPIkeyGone) Error() string {
+// IsCode returns true when this add a p ikey Ok response a status code equal to that given
+func (o *AddAPIkeyOK) IsCode(code int) bool {
+	return code == 200
+}
+
+// Code gets the status code for the add a p ikey Ok response
+func (o *AddAPIkeyOK) Code() int {
+	return 200
+}
+
+func (o *AddAPIkeyOK) Error() string {
 	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyGone %s", 410, payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyOk %s", 200, payload)
 }
 
-func (o *AddAPIkeyGone) String() string {
+func (o *AddAPIkeyOK) String() string {
 	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyGone %s", 410, payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyOk %s", 200, payload)
 }
 
-func (o *AddAPIkeyGone) GetPayload() *models.ErrorResponseBody {
+func (o *AddAPIkeyOK) GetPayload() *models.NewAPIKeyResult {
 	return o.Payload
 }
 
-func (o *AddAPIkeyGone) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *AddAPIkeyOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.NewAPIKeyResult)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewAddAPIkeyBadRequest creates a AddAPIkeyBadRequest with default headers values
+func NewAddAPIkeyBadRequest() *AddAPIkeyBadRequest {
+	return &AddAPIkeyBadRequest{}
+}
+
+/*
+AddAPIkeyBadRequest describes a response with status code 400, with default header values.
+
+BadRequestError is returned when the request is invalid and it cannot be processed.
+*/
+type AddAPIkeyBadRequest struct {
+	Payload *models.ErrorResponseBody
+}
+
+// IsSuccess returns true when this add a p ikey bad request response has a 2xx status code
+func (o *AddAPIkeyBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this add a p ikey bad request response has a 3xx status code
+func (o *AddAPIkeyBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this add a p ikey bad request response has a 4xx status code
+func (o *AddAPIkeyBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this add a p ikey bad request response has a 5xx status code
+func (o *AddAPIkeyBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this add a p ikey bad request response a status code equal to that given
+func (o *AddAPIkeyBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the add a p ikey bad request response
+func (o *AddAPIkeyBadRequest) Code() int {
+	return 400
+}
+
+func (o *AddAPIkeyBadRequest) Error() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyBadRequest %s", 400, payload)
+}
+
+func (o *AddAPIkeyBadRequest) String() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyBadRequest %s", 400, payload)
+}
+
+func (o *AddAPIkeyBadRequest) GetPayload() *models.ErrorResponseBody {
+	return o.Payload
+}
+
+func (o *AddAPIkeyBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponseBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewAddAPIkeyUnauthorized creates a AddAPIkeyUnauthorized with default headers values
+func NewAddAPIkeyUnauthorized() *AddAPIkeyUnauthorized {
+	return &AddAPIkeyUnauthorized{}
+}
+
+/*
+AddAPIkeyUnauthorized describes a response with status code 401, with default header values.
+
+UnauthorizedError is returned when the request is not authenticated.
+*/
+type AddAPIkeyUnauthorized struct {
+	Payload *models.ErrorResponseBody
+}
+
+// IsSuccess returns true when this add a p ikey unauthorized response has a 2xx status code
+func (o *AddAPIkeyUnauthorized) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this add a p ikey unauthorized response has a 3xx status code
+func (o *AddAPIkeyUnauthorized) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this add a p ikey unauthorized response has a 4xx status code
+func (o *AddAPIkeyUnauthorized) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this add a p ikey unauthorized response has a 5xx status code
+func (o *AddAPIkeyUnauthorized) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this add a p ikey unauthorized response a status code equal to that given
+func (o *AddAPIkeyUnauthorized) IsCode(code int) bool {
+	return code == 401
+}
+
+// Code gets the status code for the add a p ikey unauthorized response
+func (o *AddAPIkeyUnauthorized) Code() int {
+	return 401
+}
+
+func (o *AddAPIkeyUnauthorized) Error() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyUnauthorized %s", 401, payload)
+}
+
+func (o *AddAPIkeyUnauthorized) String() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyUnauthorized %s", 401, payload)
+}
+
+func (o *AddAPIkeyUnauthorized) GetPayload() *models.ErrorResponseBody {
+	return o.Payload
+}
+
+func (o *AddAPIkeyUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponseBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewAddAPIkeyForbidden creates a AddAPIkeyForbidden with default headers values
+func NewAddAPIkeyForbidden() *AddAPIkeyForbidden {
+	return &AddAPIkeyForbidden{}
+}
+
+/*
+AddAPIkeyForbidden describes a response with status code 403, with default header values.
+
+ForbiddenError is returned if the user/token has insufficient permissions to access the requested resource.
+*/
+type AddAPIkeyForbidden struct {
+	Payload *models.ErrorResponseBody
+}
+
+// IsSuccess returns true when this add a p ikey forbidden response has a 2xx status code
+func (o *AddAPIkeyForbidden) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this add a p ikey forbidden response has a 3xx status code
+func (o *AddAPIkeyForbidden) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this add a p ikey forbidden response has a 4xx status code
+func (o *AddAPIkeyForbidden) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this add a p ikey forbidden response has a 5xx status code
+func (o *AddAPIkeyForbidden) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this add a p ikey forbidden response a status code equal to that given
+func (o *AddAPIkeyForbidden) IsCode(code int) bool {
+	return code == 403
+}
+
+// Code gets the status code for the add a p ikey forbidden response
+func (o *AddAPIkeyForbidden) Code() int {
+	return 403
+}
+
+func (o *AddAPIkeyForbidden) Error() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyForbidden %s", 403, payload)
+}
+
+func (o *AddAPIkeyForbidden) String() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyForbidden %s", 403, payload)
+}
+
+func (o *AddAPIkeyForbidden) GetPayload() *models.ErrorResponseBody {
+	return o.Payload
+}
+
+func (o *AddAPIkeyForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponseBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewAddAPIkeyConflict creates a AddAPIkeyConflict with default headers values
+func NewAddAPIkeyConflict() *AddAPIkeyConflict {
+	return &AddAPIkeyConflict{}
+}
+
+/*
+AddAPIkeyConflict describes a response with status code 409, with default header values.
+
+ConflictError
+*/
+type AddAPIkeyConflict struct {
+	Payload *models.ErrorResponseBody
+}
+
+// IsSuccess returns true when this add a p ikey conflict response has a 2xx status code
+func (o *AddAPIkeyConflict) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this add a p ikey conflict response has a 3xx status code
+func (o *AddAPIkeyConflict) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this add a p ikey conflict response has a 4xx status code
+func (o *AddAPIkeyConflict) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this add a p ikey conflict response has a 5xx status code
+func (o *AddAPIkeyConflict) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this add a p ikey conflict response a status code equal to that given
+func (o *AddAPIkeyConflict) IsCode(code int) bool {
+	return code == 409
+}
+
+// Code gets the status code for the add a p ikey conflict response
+func (o *AddAPIkeyConflict) Code() int {
+	return 409
+}
+
+func (o *AddAPIkeyConflict) Error() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyConflict %s", 409, payload)
+}
+
+func (o *AddAPIkeyConflict) String() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyConflict %s", 409, payload)
+}
+
+func (o *AddAPIkeyConflict) GetPayload() *models.ErrorResponseBody {
+	return o.Payload
+}
+
+func (o *AddAPIkeyConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponseBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewAddAPIkeyInternalServerError creates a AddAPIkeyInternalServerError with default headers values
+func NewAddAPIkeyInternalServerError() *AddAPIkeyInternalServerError {
+	return &AddAPIkeyInternalServerError{}
+}
+
+/*
+AddAPIkeyInternalServerError describes a response with status code 500, with default header values.
+
+InternalServerError is a general error indicating something went wrong internally.
+*/
+type AddAPIkeyInternalServerError struct {
+	Payload *models.ErrorResponseBody
+}
+
+// IsSuccess returns true when this add a p ikey internal server error response has a 2xx status code
+func (o *AddAPIkeyInternalServerError) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this add a p ikey internal server error response has a 3xx status code
+func (o *AddAPIkeyInternalServerError) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this add a p ikey internal server error response has a 4xx status code
+func (o *AddAPIkeyInternalServerError) IsClientError() bool {
+	return false
+}
+
+// IsServerError returns true when this add a p ikey internal server error response has a 5xx status code
+func (o *AddAPIkeyInternalServerError) IsServerError() bool {
+	return true
+}
+
+// IsCode returns true when this add a p ikey internal server error response a status code equal to that given
+func (o *AddAPIkeyInternalServerError) IsCode(code int) bool {
+	return code == 500
+}
+
+// Code gets the status code for the add a p ikey internal server error response
+func (o *AddAPIkeyInternalServerError) Code() int {
+	return 500
+}
+
+func (o *AddAPIkeyInternalServerError) Error() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyInternalServerError %s", 500, payload)
+}
+
+func (o *AddAPIkeyInternalServerError) String() string {
+	payload, _ := json.Marshal(o.Payload)
+	return fmt.Sprintf("[POST /auth/keys][%d] addAPIkeyInternalServerError %s", 500, payload)
+}
+
+func (o *AddAPIkeyInternalServerError) GetPayload() *models.ErrorResponseBody {
+	return o.Payload
+}
+
+func (o *AddAPIkeyInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.ErrorResponseBody)
 

@@ -24,17 +24,11 @@ type BasicAuth struct {
 	// password file
 	PasswordFile string `json:"password_file,omitempty"`
 
-	// PasswordRef is the name of the secret within the secret manager to use as the password.
-	PasswordRef string `json:"password_ref,omitempty"`
-
 	// username
 	Username string `json:"username,omitempty"`
 
 	// username file
 	UsernameFile string `json:"username_file,omitempty"`
-
-	// UsernameRef is the name of the secret within the secret manager to use as the username.
-	UsernameRef string `json:"username_ref,omitempty"`
 }
 
 // Validate validates this basic auth

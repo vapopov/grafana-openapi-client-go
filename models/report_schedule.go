@@ -24,7 +24,7 @@ type ReportSchedule struct {
 
 	// end date
 	// Format: date-time
-	EndDate *strfmt.DateTime `json:"endDate,omitempty"`
+	EndDate strfmt.DateTime `json:"endDate,omitempty"`
 
 	// frequency
 	Frequency string `json:"frequency,omitempty"`
@@ -37,7 +37,7 @@ type ReportSchedule struct {
 
 	// start date
 	// Format: date-time
-	StartDate *strfmt.DateTime `json:"startDate,omitempty"`
+	StartDate strfmt.DateTime `json:"startDate,omitempty"`
 
 	// time zone
 	TimeZone string `json:"timeZone,omitempty"`

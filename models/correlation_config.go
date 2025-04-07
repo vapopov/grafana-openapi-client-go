@@ -33,7 +33,8 @@ type CorrelationConfig struct {
 	Transformations Transformations `json:"transformations,omitempty"`
 
 	// type
-	Type CorrelationType `json:"type,omitempty"`
+	// Required: true
+	Type *CorrelationConfigType `json:"type"`
 }
 
 // Validate validates this correlation config
@@ -98,17 +99,24 @@ func (m *CorrelationConfig) validateTransformations(formats strfmt.Registry) err
 }
 
 func (m *CorrelationConfig) validateType(formats strfmt.Registry) error {
-	if swag.IsZero(m.Type) { // not required
-		return nil
+
+	if err := validate.Required("type", "body", m.Type); err != nil {
+		return err
 	}
 
-	if err := m.Type.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("type")
-		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("type")
-		}
+	if err := validate.Required("type", "body", m.Type); err != nil {
 		return err
+	}
+
+	if m.Type != nil {
+		if err := m.Type.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("type")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("type")
+			}
+			return err
+		}
 	}
 
 	return nil
@@ -148,17 +156,16 @@ func (m *CorrelationConfig) contextValidateTransformations(ctx context.Context, 
 
 func (m *CorrelationConfig) contextValidateType(ctx context.Context, formats strfmt.Registry) error {
 
-	if swag.IsZero(m.Type) { // not required
-		return nil
-	}
+	if m.Type != nil {
 
-	if err := m.Type.ContextValidate(ctx, formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("type")
-		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("type")
+		if err := m.Type.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("type")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("type")
+			}
+			return err
 		}
-		return err
 	}
 
 	return nil

@@ -34,18 +34,12 @@ type PostableGrafanaRule struct {
 	// is paused
 	IsPaused bool `json:"is_paused,omitempty"`
 
-	// metadata
-	Metadata *AlertRuleMetadata `json:"metadata,omitempty"`
-
 	// no data state
 	// Enum: [Alerting NoData OK]
 	NoDataState string `json:"no_data_state,omitempty"`
 
 	// notification settings
 	NotificationSettings *AlertRuleNotificationSettings `json:"notification_settings,omitempty"`
-
-	// record
-	Record *Record `json:"record,omitempty"`
 
 	// title
 	Title string `json:"title,omitempty"`
@@ -66,19 +60,11 @@ func (m *PostableGrafanaRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateMetadata(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateNoDataState(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validateNotificationSettings(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRecord(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -159,25 +145,6 @@ func (m *PostableGrafanaRule) validateExecErrState(formats strfmt.Registry) erro
 	return nil
 }
 
-func (m *PostableGrafanaRule) validateMetadata(formats strfmt.Registry) error {
-	if swag.IsZero(m.Metadata) { // not required
-		return nil
-	}
-
-	if m.Metadata != nil {
-		if err := m.Metadata.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("metadata")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("metadata")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
 var postableGrafanaRuleTypeNoDataStatePropEnum []interface{}
 
 func init() {
@@ -242,25 +209,6 @@ func (m *PostableGrafanaRule) validateNotificationSettings(formats strfmt.Regist
 	return nil
 }
 
-func (m *PostableGrafanaRule) validateRecord(formats strfmt.Registry) error {
-	if swag.IsZero(m.Record) { // not required
-		return nil
-	}
-
-	if m.Record != nil {
-		if err := m.Record.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("record")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("record")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
 // ContextValidate validate this postable grafana rule based on the context it is used
 func (m *PostableGrafanaRule) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
@@ -269,15 +217,7 @@ func (m *PostableGrafanaRule) ContextValidate(ctx context.Context, formats strfm
 		res = append(res, err)
 	}
 
-	if err := m.contextValidateMetadata(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.contextValidateNotificationSettings(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateRecord(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -312,27 +252,6 @@ func (m *PostableGrafanaRule) contextValidateData(ctx context.Context, formats s
 	return nil
 }
 
-func (m *PostableGrafanaRule) contextValidateMetadata(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Metadata != nil {
-
-		if swag.IsZero(m.Metadata) { // not required
-			return nil
-		}
-
-		if err := m.Metadata.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("metadata")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("metadata")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
 func (m *PostableGrafanaRule) contextValidateNotificationSettings(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.NotificationSettings != nil {
@@ -346,27 +265,6 @@ func (m *PostableGrafanaRule) contextValidateNotificationSettings(ctx context.Co
 				return ve.ValidateName("notification_settings")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("notification_settings")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (m *PostableGrafanaRule) contextValidateRecord(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Record != nil {
-
-		if swag.IsZero(m.Record) { // not required
-			return nil
-		}
-
-		if err := m.Record.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("record")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("record")
 			}
 			return err
 		}

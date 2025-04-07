@@ -11,7 +11,6 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
 )
 
 // Hit hit
@@ -19,7 +18,7 @@ import (
 // swagger:model Hit
 type Hit struct {
 
-	// folder Id
+	// Deprecated: use FolderUID instead
 	FolderID int64 `json:"folderId,omitempty"`
 
 	// folder title
@@ -34,15 +33,8 @@ type Hit struct {
 	// id
 	ID int64 `json:"id,omitempty"`
 
-	// is deleted
-	IsDeleted bool `json:"isDeleted,omitempty"`
-
 	// is starred
 	IsStarred bool `json:"isStarred,omitempty"`
-
-	// permanently delete date
-	// Format: date-time
-	PermanentlyDeleteDate strfmt.DateTime `json:"permanentlyDeleteDate,omitempty"`
 
 	// slug
 	Slug string `json:"slug,omitempty"`
@@ -76,10 +68,6 @@ type Hit struct {
 func (m *Hit) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validatePermanentlyDeleteDate(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateType(formats); err != nil {
 		res = append(res, err)
 	}
@@ -87,18 +75,6 @@ func (m *Hit) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Hit) validatePermanentlyDeleteDate(formats strfmt.Registry) error {
-	if swag.IsZero(m.PermanentlyDeleteDate) { // not required
-		return nil
-	}
-
-	if err := validate.FormatOf("permanentlyDeleteDate", "body", "date-time", m.PermanentlyDeleteDate.String(), formats); err != nil {
-		return err
-	}
-
 	return nil
 }
 

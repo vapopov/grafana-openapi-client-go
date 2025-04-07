@@ -30,7 +30,7 @@ type AlertingRule struct {
 
 	// annotations
 	// Required: true
-	Annotations Labels `json:"annotations"`
+	Annotations OverrideLabels `json:"annotations"`
 
 	// duration
 	Duration float64 `json:"duration,omitempty"`
@@ -43,7 +43,7 @@ type AlertingRule struct {
 	Health *string `json:"health"`
 
 	// labels
-	Labels Labels `json:"labels,omitempty"`
+	Labels OverrideLabels `json:"labels,omitempty"`
 
 	// last error
 	LastError string `json:"lastError,omitempty"`
@@ -72,7 +72,7 @@ type AlertingRule struct {
 
 	// type
 	// Required: true
-	Type *string `json:"type"`
+	Type *RuleType `json:"type"`
 }
 
 // Validate validates this alerting rule
@@ -170,13 +170,15 @@ func (m *AlertingRule) validateAnnotations(formats strfmt.Registry) error {
 		return err
 	}
 
-	if err := m.Annotations.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("annotations")
-		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("annotations")
+	if m.Annotations != nil {
+		if err := m.Annotations.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("annotations")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("annotations")
+			}
+			return err
 		}
-		return err
 	}
 
 	return nil
@@ -196,13 +198,15 @@ func (m *AlertingRule) validateLabels(formats strfmt.Registry) error {
 		return nil
 	}
 
-	if err := m.Labels.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("labels")
-		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("labels")
+	if m.Labels != nil {
+		if err := m.Labels.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("labels")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("labels")
+			}
+			return err
 		}
-		return err
 	}
 
 	return nil
@@ -253,6 +257,21 @@ func (m *AlertingRule) validateType(formats strfmt.Registry) error {
 		return err
 	}
 
+	if err := validate.Required("type", "body", m.Type); err != nil {
+		return err
+	}
+
+	if m.Type != nil {
+		if err := m.Type.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("type")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("type")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -269,6 +288,10 @@ func (m *AlertingRule) ContextValidate(ctx context.Context, formats strfmt.Regis
 	}
 
 	if err := m.contextValidateLabels(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateType(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -319,6 +342,10 @@ func (m *AlertingRule) contextValidateAnnotations(ctx context.Context, formats s
 
 func (m *AlertingRule) contextValidateLabels(ctx context.Context, formats strfmt.Registry) error {
 
+	if swag.IsZero(m.Labels) { // not required
+		return nil
+	}
+
 	if err := m.Labels.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("labels")
@@ -326,6 +353,23 @@ func (m *AlertingRule) contextValidateLabels(ctx context.Context, formats strfmt
 			return ce.ValidateName("labels")
 		}
 		return err
+	}
+
+	return nil
+}
+
+func (m *AlertingRule) contextValidateType(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Type != nil {
+
+		if err := m.Type.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("type")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("type")
+			}
+			return err
+		}
 	}
 
 	return nil

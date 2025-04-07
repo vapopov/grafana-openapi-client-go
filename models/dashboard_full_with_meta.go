@@ -19,7 +19,7 @@ import (
 type DashboardFullWithMeta struct {
 
 	// dashboard
-	Dashboard JSON `json:"dashboard,omitempty"`
+	Dashboard *Dashboard `json:"dashboard,omitempty"`
 
 	// meta
 	Meta *DashboardMeta `json:"meta,omitempty"`
@@ -29,6 +29,10 @@ type DashboardFullWithMeta struct {
 func (m *DashboardFullWithMeta) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateDashboard(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateMeta(formats); err != nil {
 		res = append(res, err)
 	}
@@ -36,6 +40,25 @@ func (m *DashboardFullWithMeta) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *DashboardFullWithMeta) validateDashboard(formats strfmt.Registry) error {
+	if swag.IsZero(m.Dashboard) { // not required
+		return nil
+	}
+
+	if m.Dashboard != nil {
+		if err := m.Dashboard.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("dashboard")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("dashboard")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -62,6 +85,10 @@ func (m *DashboardFullWithMeta) validateMeta(formats strfmt.Registry) error {
 func (m *DashboardFullWithMeta) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.contextValidateDashboard(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateMeta(ctx, formats); err != nil {
 		res = append(res, err)
 	}
@@ -69,6 +96,27 @@ func (m *DashboardFullWithMeta) ContextValidate(ctx context.Context, formats str
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *DashboardFullWithMeta) contextValidateDashboard(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Dashboard != nil {
+
+		if swag.IsZero(m.Dashboard) { // not required
+			return nil
+		}
+
+		if err := m.Dashboard.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("dashboard")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("dashboard")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

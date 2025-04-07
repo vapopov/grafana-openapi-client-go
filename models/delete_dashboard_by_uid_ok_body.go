@@ -19,6 +19,11 @@ import (
 // swagger:model deleteDashboardByUidOkBody
 type DeleteDashboardByUIDOKBody struct {
 
+	// ID Identifier of the deleted dashboard.
+	// Example: 65
+	// Required: true
+	ID *int64 `json:"id"`
+
 	// Message Message of the deleted dashboard.
 	// Example: Dashboard My Dashboard deleted
 	// Required: true
@@ -28,16 +33,15 @@ type DeleteDashboardByUIDOKBody struct {
 	// Example: My Dashboard
 	// Required: true
 	Title *string `json:"title"`
-
-	// UID Identifier of the deleted dashboard.
-	// Example: 65
-	// Required: true
-	UID *string `json:"uid"`
 }
 
 // Validate validates this delete dashboard by Uid Ok body
 func (m *DeleteDashboardByUIDOKBody) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.validateMessage(formats); err != nil {
 		res = append(res, err)
@@ -47,13 +51,18 @@ func (m *DeleteDashboardByUIDOKBody) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateUID(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *DeleteDashboardByUIDOKBody) validateID(formats strfmt.Registry) error {
+
+	if err := validate.Required("id", "body", m.ID); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -69,15 +78,6 @@ func (m *DeleteDashboardByUIDOKBody) validateMessage(formats strfmt.Registry) er
 func (m *DeleteDashboardByUIDOKBody) validateTitle(formats strfmt.Registry) error {
 
 	if err := validate.Required("title", "body", m.Title); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *DeleteDashboardByUIDOKBody) validateUID(formats strfmt.Registry) error {
-
-	if err := validate.Required("uid", "body", m.UID); err != nil {
 		return err
 	}
 

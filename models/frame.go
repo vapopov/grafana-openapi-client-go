@@ -7,7 +7,6 @@ package models
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -24,30 +23,22 @@ import (
 // swagger:model Frame
 type Frame struct {
 
-	// Fields are the columns of a frame.
-	// All Fields must be of the same the length when marshalling the Frame for transmission.
-	// There should be no `nil` entries in the Fields slice (making them pointers was a mistake).
-	Fields []*Field `json:"Fields"`
+	// data
+	Data *FrameData `json:"data,omitempty"`
 
-	// meta
-	Meta *FrameMeta `json:"Meta,omitempty"`
-
-	// Name is used in some Grafana visualizations.
-	Name string `json:"Name,omitempty"`
-
-	// RefID is a property that can be set to match a Frame to its originating query.
-	RefID string `json:"RefID,omitempty"`
+	// schema
+	Schema *FrameSchema `json:"schema,omitempty"`
 }
 
 // Validate validates this frame
 func (m *Frame) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateFields(formats); err != nil {
+	if err := m.validateData(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateMeta(formats); err != nil {
+	if err := m.validateSchema(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -57,43 +48,36 @@ func (m *Frame) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Frame) validateFields(formats strfmt.Registry) error {
-	if swag.IsZero(m.Fields) { // not required
+func (m *Frame) validateData(formats strfmt.Registry) error {
+	if swag.IsZero(m.Data) { // not required
 		return nil
 	}
 
-	for i := 0; i < len(m.Fields); i++ {
-		if swag.IsZero(m.Fields[i]) { // not required
-			continue
-		}
-
-		if m.Fields[i] != nil {
-			if err := m.Fields[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("Fields" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("Fields" + "." + strconv.Itoa(i))
-				}
-				return err
+	if m.Data != nil {
+		if err := m.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("data")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("data")
 			}
+			return err
 		}
-
 	}
 
 	return nil
 }
 
-func (m *Frame) validateMeta(formats strfmt.Registry) error {
-	if swag.IsZero(m.Meta) { // not required
+func (m *Frame) validateSchema(formats strfmt.Registry) error {
+	if swag.IsZero(m.Schema) { // not required
 		return nil
 	}
 
-	if m.Meta != nil {
-		if err := m.Meta.Validate(formats); err != nil {
+	if m.Schema != nil {
+		if err := m.Schema.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("Meta")
+				return ve.ValidateName("schema")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("Meta")
+				return ce.ValidateName("schema")
 			}
 			return err
 		}
@@ -106,11 +90,11 @@ func (m *Frame) validateMeta(formats strfmt.Registry) error {
 func (m *Frame) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.contextValidateFields(ctx, formats); err != nil {
+	if err := m.contextValidateData(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.contextValidateMeta(ctx, formats); err != nil {
+	if err := m.contextValidateSchema(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -120,44 +104,40 @@ func (m *Frame) ContextValidate(ctx context.Context, formats strfmt.Registry) er
 	return nil
 }
 
-func (m *Frame) contextValidateFields(ctx context.Context, formats strfmt.Registry) error {
+func (m *Frame) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
 
-	for i := 0; i < len(m.Fields); i++ {
+	if m.Data != nil {
 
-		if m.Fields[i] != nil {
-
-			if swag.IsZero(m.Fields[i]) { // not required
-				return nil
-			}
-
-			if err := m.Fields[i].ContextValidate(ctx, formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("Fields" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("Fields" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
+		if swag.IsZero(m.Data) { // not required
+			return nil
 		}
 
+		if err := m.Data.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("data")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("data")
+			}
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (m *Frame) contextValidateMeta(ctx context.Context, formats strfmt.Registry) error {
+func (m *Frame) contextValidateSchema(ctx context.Context, formats strfmt.Registry) error {
 
-	if m.Meta != nil {
+	if m.Schema != nil {
 
-		if swag.IsZero(m.Meta) { // not required
+		if swag.IsZero(m.Schema) { // not required
 			return nil
 		}
 
-		if err := m.Meta.ContextValidate(ctx, formats); err != nil {
+		if err := m.Schema.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("Meta")
+				return ve.ValidateName("schema")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("Meta")
+				return ce.ValidateName("schema")
 			}
 			return err
 		}

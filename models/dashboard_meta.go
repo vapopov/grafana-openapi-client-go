@@ -81,6 +81,9 @@ type DashboardMeta struct {
 	// public dashboard enabled
 	PublicDashboardEnabled bool `json:"publicDashboardEnabled,omitempty"`
 
+	// public dashboard Uid
+	PublicDashboardUID string `json:"publicDashboardUid,omitempty"`
+
 	// slug
 	Slug string `json:"slug,omitempty"`
 

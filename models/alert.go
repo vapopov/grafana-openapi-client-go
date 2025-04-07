@@ -25,11 +25,11 @@ type Alert struct {
 
 	// annotations
 	// Required: true
-	Annotations Labels `json:"annotations"`
+	Annotations OverrideLabels `json:"annotations"`
 
 	// labels
 	// Required: true
-	Labels Labels `json:"labels"`
+	Labels OverrideLabels `json:"labels"`
 
 	// state
 	// Required: true
@@ -88,13 +88,15 @@ func (m *Alert) validateAnnotations(formats strfmt.Registry) error {
 		return err
 	}
 
-	if err := m.Annotations.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("annotations")
-		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("annotations")
+	if m.Annotations != nil {
+		if err := m.Annotations.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("annotations")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("annotations")
+			}
+			return err
 		}
-		return err
 	}
 
 	return nil
@@ -106,13 +108,15 @@ func (m *Alert) validateLabels(formats strfmt.Registry) error {
 		return err
 	}
 
-	if err := m.Labels.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("labels")
-		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("labels")
+	if m.Labels != nil {
+		if err := m.Labels.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("labels")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("labels")
+			}
+			return err
 		}
-		return err
 	}
 
 	return nil

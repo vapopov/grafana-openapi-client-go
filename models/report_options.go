@@ -24,12 +24,6 @@ type ReportOptions struct {
 	// orientation
 	Orientation string `json:"orientation,omitempty"`
 
-	// pdf combine one file
-	PDFCombineOneFile bool `json:"pdfCombineOneFile,omitempty"`
-
-	// pdf show template variables
-	PDFShowTemplateVariables bool `json:"pdfShowTemplateVariables,omitempty"`
-
 	// time range
 	TimeRange *ReportTimeRange `json:"timeRange,omitempty"`
 }

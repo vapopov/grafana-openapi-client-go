@@ -22,16 +22,16 @@ import (
 type DataResponse struct {
 
 	// Error is a property to be set if the corresponding DataQuery has an error.
-	Error string `json:"Error,omitempty"`
+	Error string `json:"error,omitempty"`
 
 	// error source
-	ErrorSource Source `json:"ErrorSource,omitempty"`
+	ErrorSource ErrorSource `json:"errorSource,omitempty"`
 
 	// frames
-	Frames Frames `json:"Frames,omitempty"`
+	Frames Frames `json:"frames,omitempty"`
 
 	// status
-	Status Status `json:"Status,omitempty"`
+	Status Status `json:"status,omitempty"`
 }
 
 // Validate validates this data response
@@ -63,9 +63,9 @@ func (m *DataResponse) validateErrorSource(formats strfmt.Registry) error {
 
 	if err := m.ErrorSource.Validate(formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("ErrorSource")
+			return ve.ValidateName("errorSource")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("ErrorSource")
+			return ce.ValidateName("errorSource")
 		}
 		return err
 	}
@@ -80,9 +80,9 @@ func (m *DataResponse) validateFrames(formats strfmt.Registry) error {
 
 	if err := m.Frames.Validate(formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("Frames")
+			return ve.ValidateName("frames")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("Frames")
+			return ce.ValidateName("frames")
 		}
 		return err
 	}
@@ -97,9 +97,9 @@ func (m *DataResponse) validateStatus(formats strfmt.Registry) error {
 
 	if err := m.Status.Validate(formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("Status")
+			return ve.ValidateName("status")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("Status")
+			return ce.ValidateName("status")
 		}
 		return err
 	}
@@ -137,9 +137,9 @@ func (m *DataResponse) contextValidateErrorSource(ctx context.Context, formats s
 
 	if err := m.ErrorSource.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("ErrorSource")
+			return ve.ValidateName("errorSource")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("ErrorSource")
+			return ce.ValidateName("errorSource")
 		}
 		return err
 	}
@@ -151,9 +151,9 @@ func (m *DataResponse) contextValidateFrames(ctx context.Context, formats strfmt
 
 	if err := m.Frames.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("Frames")
+			return ve.ValidateName("frames")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("Frames")
+			return ce.ValidateName("frames")
 		}
 		return err
 	}
@@ -169,9 +169,9 @@ func (m *DataResponse) contextValidateStatus(ctx context.Context, formats strfmt
 
 	if err := m.Status.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("Status")
+			return ve.ValidateName("status")
 		} else if ce, ok := err.(*errors.CompositeError); ok {
-			return ce.ValidateName("Status")
+			return ce.ValidateName("status")
 		}
 		return err
 	}

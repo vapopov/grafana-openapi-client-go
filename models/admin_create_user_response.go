@@ -22,9 +22,6 @@ type AdminCreateUserResponse struct {
 
 	// message
 	Message string `json:"message,omitempty"`
-
-	// uid
-	UID string `json:"uid,omitempty"`
 }
 
 // Validate validates this admin create user response

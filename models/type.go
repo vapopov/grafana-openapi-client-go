@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// Type +enum
+// Type type
 //
 // swagger:model Type
 type Type string

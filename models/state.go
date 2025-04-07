@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// State +enum
+// State state
 //
 // swagger:model State
 type State string

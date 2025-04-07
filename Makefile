@@ -22,7 +22,7 @@ generate-client: ${SWAGGER} pull-schema
 	rm -rf ./models ./client
 
 	$(SWAGGER) generate client \
-	-f scripts/schema.json \
+	-f api-merged.json \
 	--skip-validation \
 	--with-flatten=remove-unused \
 	--additional-initialism=DTO \

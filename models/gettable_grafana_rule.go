@@ -40,9 +40,6 @@ type GettableGrafanaRule struct {
 	// is paused
 	IsPaused bool `json:"is_paused,omitempty"`
 
-	// metadata
-	Metadata *AlertRuleMetadata `json:"metadata,omitempty"`
-
 	// namespace uid
 	NamespaceUID string `json:"namespace_uid,omitempty"`
 
@@ -58,9 +55,6 @@ type GettableGrafanaRule struct {
 
 	// provenance
 	Provenance Provenance `json:"provenance,omitempty"`
-
-	// record
-	Record *Record `json:"record,omitempty"`
 
 	// rule group
 	RuleGroup string `json:"rule_group,omitempty"`
@@ -91,10 +85,6 @@ func (m *GettableGrafanaRule) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateMetadata(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateNoDataState(formats); err != nil {
 		res = append(res, err)
 	}
@@ -104,10 +94,6 @@ func (m *GettableGrafanaRule) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateProvenance(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRecord(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -187,25 +173,6 @@ func (m *GettableGrafanaRule) validateExecErrState(formats strfmt.Registry) erro
 	// value enum
 	if err := m.validateExecErrStateEnum("exec_err_state", "body", m.ExecErrState); err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func (m *GettableGrafanaRule) validateMetadata(formats strfmt.Registry) error {
-	if swag.IsZero(m.Metadata) { // not required
-		return nil
-	}
-
-	if m.Metadata != nil {
-		if err := m.Metadata.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("metadata")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("metadata")
-			}
-			return err
-		}
 	}
 
 	return nil
@@ -292,25 +259,6 @@ func (m *GettableGrafanaRule) validateProvenance(formats strfmt.Registry) error 
 	return nil
 }
 
-func (m *GettableGrafanaRule) validateRecord(formats strfmt.Registry) error {
-	if swag.IsZero(m.Record) { // not required
-		return nil
-	}
-
-	if m.Record != nil {
-		if err := m.Record.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("record")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("record")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
 func (m *GettableGrafanaRule) validateUpdated(formats strfmt.Registry) error {
 	if swag.IsZero(m.Updated) { // not required
 		return nil
@@ -331,19 +279,11 @@ func (m *GettableGrafanaRule) ContextValidate(ctx context.Context, formats strfm
 		res = append(res, err)
 	}
 
-	if err := m.contextValidateMetadata(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.contextValidateNotificationSettings(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.contextValidateProvenance(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateRecord(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -373,27 +313,6 @@ func (m *GettableGrafanaRule) contextValidateData(ctx context.Context, formats s
 			}
 		}
 
-	}
-
-	return nil
-}
-
-func (m *GettableGrafanaRule) contextValidateMetadata(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Metadata != nil {
-
-		if swag.IsZero(m.Metadata) { // not required
-			return nil
-		}
-
-		if err := m.Metadata.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("metadata")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("metadata")
-			}
-			return err
-		}
 	}
 
 	return nil
@@ -433,27 +352,6 @@ func (m *GettableGrafanaRule) contextValidateProvenance(ctx context.Context, for
 			return ce.ValidateName("provenance")
 		}
 		return err
-	}
-
-	return nil
-}
-
-func (m *GettableGrafanaRule) contextValidateRecord(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Record != nil {
-
-		if swag.IsZero(m.Record) { // not required
-			return nil
-		}
-
-		if err := m.Record.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("record")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("record")
-			}
-			return err
-		}
 	}
 
 	return nil

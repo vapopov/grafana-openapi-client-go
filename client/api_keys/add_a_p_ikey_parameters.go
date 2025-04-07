@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/grafana/grafana-openapi-client-go/models"
 )
 
 // NewAddAPIkeyParams creates a new AddAPIkeyParams object,
@@ -60,6 +62,10 @@ AddAPIkeyParams contains all the parameters to send to the API endpoint
 	Typically these are written to a http.Request.
 */
 type AddAPIkeyParams struct {
+
+	// Body.
+	Body *models.AddAPIKeyCommand
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -113,6 +119,17 @@ func (o *AddAPIkeyParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the add a p ikey params
+func (o *AddAPIkeyParams) WithBody(body *models.AddAPIKeyCommand) *AddAPIkeyParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the add a p ikey params
+func (o *AddAPIkeyParams) SetBody(body *models.AddAPIKeyCommand) {
+	o.Body = body
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *AddAPIkeyParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -120,6 +137,11 @@ func (o *AddAPIkeyParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

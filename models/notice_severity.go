@@ -14,7 +14,7 @@ import (
 // NoticeSeverity NoticeSeverity is a type for the Severity property of a Notice.
 //
 // swagger:model NoticeSeverity
-type NoticeSeverity int64
+type NoticeSeverity string
 
 // Validate validates this notice severity
 func (m NoticeSeverity) Validate(formats strfmt.Registry) error {

@@ -22,9 +22,6 @@ type CreateTeamOKBody struct {
 
 	// team Id
 	TeamID int64 `json:"teamId,omitempty"`
-
-	// uid
-	UID string `json:"uid,omitempty"`
 }
 
 // Validate validates this create team Ok body

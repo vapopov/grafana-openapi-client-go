@@ -47,8 +47,7 @@ type ProvisionedAlertRule struct {
 
 	// for
 	// Required: true
-	// Format: duration
-	For *strfmt.Duration `json:"for"`
+	For *Duration `json:"for"`
 
 	// id
 	ID int64 `json:"id,omitempty"`
@@ -75,9 +74,6 @@ type ProvisionedAlertRule struct {
 
 	// provenance
 	Provenance Provenance `json:"provenance,omitempty"`
-
-	// record
-	Record *Record `json:"record,omitempty"`
 
 	// rule group
 	// Example: eval_group_1
@@ -142,10 +138,6 @@ func (m *ProvisionedAlertRule) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateProvenance(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRecord(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -268,8 +260,19 @@ func (m *ProvisionedAlertRule) validateFor(formats strfmt.Registry) error {
 		return err
 	}
 
-	if err := validate.FormatOf("for", "body", "duration", m.For.String(), formats); err != nil {
+	if err := validate.Required("for", "body", m.For); err != nil {
 		return err
+	}
+
+	if m.For != nil {
+		if err := m.For.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("for")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("for")
+			}
+			return err
+		}
 	}
 
 	return nil
@@ -366,25 +369,6 @@ func (m *ProvisionedAlertRule) validateProvenance(formats strfmt.Registry) error
 	return nil
 }
 
-func (m *ProvisionedAlertRule) validateRecord(formats strfmt.Registry) error {
-	if swag.IsZero(m.Record) { // not required
-		return nil
-	}
-
-	if m.Record != nil {
-		if err := m.Record.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("record")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("record")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
 func (m *ProvisionedAlertRule) validateRuleGroup(formats strfmt.Registry) error {
 
 	if err := validate.Required("ruleGroup", "body", m.RuleGroup); err != nil {
@@ -459,15 +443,15 @@ func (m *ProvisionedAlertRule) ContextValidate(ctx context.Context, formats strf
 		res = append(res, err)
 	}
 
+	if err := m.contextValidateFor(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateNotificationSettings(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.contextValidateProvenance(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateRecord(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -501,6 +485,23 @@ func (m *ProvisionedAlertRule) contextValidateData(ctx context.Context, formats 
 			}
 		}
 
+	}
+
+	return nil
+}
+
+func (m *ProvisionedAlertRule) contextValidateFor(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.For != nil {
+
+		if err := m.For.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("for")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("for")
+			}
+			return err
+		}
 	}
 
 	return nil
@@ -540,27 +541,6 @@ func (m *ProvisionedAlertRule) contextValidateProvenance(ctx context.Context, fo
 			return ce.ValidateName("provenance")
 		}
 		return err
-	}
-
-	return nil
-}
-
-func (m *ProvisionedAlertRule) contextValidateRecord(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Record != nil {
-
-		if swag.IsZero(m.Record) { // not required
-			return nil
-		}
-
-		if err := m.Record.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("record")
-			} else if ce, ok := err.(*errors.CompositeError); ok {
-				return ce.ValidateName("record")
-			}
-			return err
-		}
 	}
 
 	return nil
