@@ -14218,11 +14218,14 @@
     "FrameColumn": {
       "description": "A single column of data in the data frame",
       "type": "array",
-        "items": {
-          "type": "number",
-          "format": "float"
-      }
-    },
+
+"items": {
+    "anyOf": [
+      { "type": "number","format": "float"},
+      { "type": "string" }
+    ]
+  }     
+     },
     "FrameSchema": {
       "description": "The structure of the frame data",
       "type": "object",
